@@ -1,0 +1,91 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>Log In | BogglePC</title>
+
+    <!-- GLOBAL MAINLY STYLES-->
+    <link href="~/themes/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/themes/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/themes/assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
+    <!-- THEME STYLES-->
+    <link href="~/themes/assets/css/main.css" rel="stylesheet" />
+    <!-- PAGE LEVEL STYLES-->
+    <link href="~/themes/assets/css/pages/auth-light.css" rel="stylesheet" />
+
+</head>
+
+<body class="bg-white">
+    <div class="ncontent">
+        <h1 class="m-t-20">404</h1>
+        <p class="error-title">PAGE NOT FOUND</p>
+        <p class="m-b-20">
+            Sorry, the page you were looking for could not found. Please check the URL and try your luck again.
+            <a class="color-green" onclick="goBack()">Go Back</a> or try the search bar below.
+        </p>
+
+    </div>
+
+    <style>
+        .ncontent {
+            max-width: 450px;
+            margin: 0 auto;
+            text-align: center;
+            margin-top: 90px;
+        }
+
+        .content h1 {
+            font-size: 160px
+        }
+
+        .error-title {
+            font-size: 22px;
+            font-weight: 500;
+            margin-top: 30px
+        }
+    </style>
+    <script type="text/javascript">
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+    <script src="~/themes/assets/landing/js/jquery-1.12.1.min.js"></script>
+    <!-- popper js -->
+    <script src="~/themes/assets/landing/js/popper.min.js"></script>
+    <!-- bootstrap js -->
+    <script src="~/themes/assets/landing/js/bootstrap.min.js"></script>
+    <!-- easing js -->
+    <script src="~/themes/assets/landing/js/jquery.magnific-popup.js"></script>
+    <!-- swiper js -->
+    <script src="~/themes/assets/landing/js/swiper.min.js"></script>
+    <!-- swiper js -->
+    <script src="~/themes/assets/landing/js/masonry.pkgd.js"></script>
+    <!-- particles js -->
+    <script src="~/themes/assets/landing/js/owl.carousel.min.js"></script>
+    <script src="~/themes/assets/landing/js/jquery.nice-select.min.js"></script>
+    <!-- slick js -->
+    <script src="~/themes/assets/landing/js/slick.min.js"></script>
+    <script src="~/themes/assets/landing/js/jquery.counterup.min.js"></script>
+    <script src="~/themes/assets/landing/js/waypoints.min.js"></script>
+    <script src="~/themes/assets/landing/js/contact.js"></script>
+    <script src="~/themes/assets/landing/js/jquery.ajaxchimp.min.js"></script>
+    <script src="~/themes/assets/landing/js/jquery.form.js"></script>
+    <script src="~/themes/assets/landing/js/jquery.validate.min.js"></script>
+    <script src="~/themes/assets/landing/js/mail-script.js"></script>
+    <!-- custom js -->
+    <script src="~/themes/assets/landing/js/custom.js"></script>
+</body>
+
+</html>

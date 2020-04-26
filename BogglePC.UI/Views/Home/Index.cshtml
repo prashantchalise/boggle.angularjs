@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "Boggle.Prashant";
+    ViewBag.Current = "Dashboard";
+}
+
+<!-- START PAGE CONTENT-->
+<div data-ng-controller="dashboardController">
+    <!-- START PAGE CONTENT-->
+    <div class="page-content fade-in-up">
+
+        <div class="row">
+           
+            <div class="col-lg-6 col-md-6 offset-md-3 offset-lg-3">
+                <div class="card mt-4"> 
+                    <div class="card-body">
+                        <h2>BOGGLE</h2>
+                        <hr />
+                        <p class="card-text">Type, click through adjacent letters to form words.</p>
+                        <div class="col-sm-12 table-responsive">
+                             <table class="table-compact table-condensed no-border">
+                                <tr>
+                                    <td width="250px"><input type="text" class="form-control" ng-model="bg.txtInput" ng-change="Boggle()" ng-enter="addWordToList()" auto-focus  focus-on="newItemAdded"/></td>
+                                    <td><i class="fa fa-clock-o"></i> <b>{{remainingTime | secondsToDateTime | date:'mm:ss'}}</b></td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         <table class="table-bordered" style="min-width:250px;">
+                                            <tr ng-repeat="rows in bg.D3BOX">
+                                                <td ng-repeat="columns in rows" style="text-align:center;">
+                                                    <button class="btn btn-lg btn-outline-success" data-toggle="button" ng-click="OnLetterClicked(columns[bg.SIDE_SELECTED])">{{columns[bg.SIDE_SELECTED]}}</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td><textarea class="form-control" style="height:200px;" ng-model="bg.txtResult" ng-disabled="true"></textarea></td>
+                                    <td>
+                                        <ul class="media-list media-list-divider m-0">
+                                            <li class="media">
+                                                <a class="btn btn-default">
+                                                    <i class="fa fa-info-circle"></i> Help
+                                                </a>
+                                            </li>
+                                            <li class="media">
+                                                <a class="btn btn-default">
+                                                    <i class="fa fa-info-circle"></i> New
+                                                </a>
+                                            </li>
+                                            <li class="media">
+                                                <a class="btn btn-default text-success" ng-click="Solve()">
+                                                    <i class="fa fa-check-circle"></i> Solve
+                                                </a>
+                                            </li>
+
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <a class="btn btn-default" ng-click="Rotate()">
+                                            <i class="fa fa-refresh"></i> <br />Rotate
+                                        </a>
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-info-circle"></i><br /> Undo
+                                        </a>
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-info-circle"></i><br /> Redo
+                                        </a>
+                                        <a class="btn btn-default">
+                                            <i class="fa fa-plus"></i><br /> Add
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div> 
+    </div>
+    <!-- END PAGE CONTENT-->
+</div>
+
+@section Scripts{
+
+    <script src="~/lib/angController/Dashboard/dashboardController.js"></script>
+}

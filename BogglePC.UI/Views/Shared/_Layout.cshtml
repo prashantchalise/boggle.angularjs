@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-ng-app="RolpoApp">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title || Boggle.Prashant</title>
+    <link rel="shortcut icon" href="~/favicon.ico">
+    <!-- GLOBAL MAINLY STYLES-->
+    <link href="~/themes/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/themes/assets/vendors/bootstrap-markdown/css/bootstrap-markdown.min.css" rel="stylesheet" />
+    <link href="~/themes/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/themes/assets/vendors/themify-icons/css/themify-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
+    <!-- PLUGINS STYLES-->
+    <link href="~/themes/assets/css/style.css" rel="stylesheet" />
+    <!-- THEME STYLES-->
+    <link href="~/themes/assets/css/main.min.css" rel="stylesheet" />
+    <link href="~/css/rolpo_custom.css" rel="stylesheet" />
+    <!-- PAGE LEVEL STYLES-->
+    <link href="~/themes/assets/css/themes/yellow-light.css" rel="stylesheet" id="theme-style">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.19.8/select.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css" />
+    <!-- CUSTOM CSS ON TOP -->
+    @RenderSection("css", required: false)
+</head>
+<body class="fixed-navbar has-animation fixed-layout sidebar-mini" ng-cloak>
+    <div class="page-wrapper">
+        <!-- START HEADER-->
+        <header class="header">
+           
+            <div class="flexbox flex-1">
+                <!-- START TOP-LEFT TOOLBAR-->
+                <ul class="nav navbar-toolbar">
+                    <li>
+                        <a class="nav-link sidebar-toggler"><i class="fa fa-puzzle-piece"></i></a>
+                    </li>
+                    <li class="hidden-sm">
+                        <div class="page-title" style="display:inline-block;">
+                            <h4 style="margin: 0px; color: white;">@ViewBag.Title &nbsp;</h4>
+                        </div><small style="display:inline-block; color: white;"> 1.0</small>
+                    </li>
+                </ul>
+                <!-- END TOP-LEFT TOOLBAR-->
+                <!-- START TOP-RIGHT TOOLBAR-->
+                <ul class="nav navbar-toolbar"> 
+ 
+                    <li class="dropdown dropdown-user">
+                        <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
+
+                            <img src="~/images/profile.png" />
+                            
+                            <span> Welcome!</span>
+                        </a>
+
+                    </li>
+                </ul>
+                <!-- END TOP-RIGHT TOOLBAR-->
+            </div>
+        </header>
+        <!-- END HEADER-->
+
+ 
+        <div class="content-wrapper mt-4">
+
+            @RenderBody()
+
+            <footer class="page-footer">
+                <div class="font-13">Boggle made with <i class="fa fa-heart"></i> using AdminCast theme</div>
+                <a class="px-4" href="javascript:;" target="_blank">Powered By Prashant</a>
+                <div class="to-top"><i class="fa fa-angle-double-up"></i></div>
+            </footer>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        /**/
+        var serviceBase = 'http://localhost:64495/';
+        /**/
+    </script>
+
+    <!-- CORE PLUGINS-->
+    <script src="~/themes/assets/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+            crossorigin="anonymous"></script>
+    <script src="~/themes/assets/vendors/popper.js/dist/umd/popper.min.js" type="text/javascript"></script>
+    <script src="~/themes/assets/vendors/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+ 
+    
+
+    <script type="text/javascript" src="~/lib/angular/angular.min.js"></script>
+    <script src="~/lib/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="~/lib/angular-bootstrap/ui-bootstrap-tpls-3.0.6.min.js"></script>
+    @*<script src="~/lib/iCheck/icheck.min.js"></script>*@
+    <script src="~/lib/angular-ui-select/dist/select.js"></script>
+
+    <script src="~/lib/app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.js"></script>
+
+    <script>
+        // In your Javascript (external .js resource or <script> tag)
+        $(document).ready(function () {
+            $('.route').select2();
+            $('.departure').select2();
+        });
+
+        $(document).on('click', '.search-dropdown', function (e) {
+            e.stopPropagation();
+        });
+    </script>
+
+    @RenderSection("scripts", required: false)
+
+    <script type="text/ng-template" id="customModalPopup">
+        @{Html.RenderPartial("~/views/shared/_Modal.cshtml");}
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    @*<script async src="https://www.googletagmanager.com/gtag/js?id=UA-96490970-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-96490970-3');
+    </script>*@
+
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+/packages
+/.vs
+/BogglePC.Model/obj
+/BogglePC.Model/bin
+/BogglePC.Service/obj
+/BogglePC.Service/bin
+/BogglePC.UI/obj
+/BogglePC.UI/bin
+/BogglePC.UI/Web.config
+/BogglePC.UI/dictionary-yawl.bkp.txt
