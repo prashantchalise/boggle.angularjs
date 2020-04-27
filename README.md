@@ -1,13 +1,13 @@
 # Boggle.AngularJs
 
-Boggle.AngularJs is a word puzzle designed for test purpose. It implements th following ...
+Boggle.AngularJs is a word puzzle designed and developed as a test excercise.
 
 ## Installation
 Simply open the project in visual studio and rename web.config_rename to web.config. VS will automatically pull the nuggets required. 
 
 
 ## Features
-Boggle.AngularJS has been insipired by different algorithms, blogs and their authors. Personally I would like to thanks follownig blogs and their authors to make this happen. 
+Boggle.AngularJS has been insipired by different designs, algorithms, blogs and their authors. Here are few of them 
 1. AdminCAST : http://admincast.com/admincast/preview/html/
 2. Letter frequency and thier weightage: https://en.wikipedia.org/wiki/Letter_frequency 
 Note: 	Relative frequencies of letters in the English language as from WIKI link above doesn't sum to 100%. Had to modify few things to sum it 100%. 
