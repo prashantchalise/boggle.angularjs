@@ -213,7 +213,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\rolpo_custom.css" />
-    <Content Include="dictionary-yawl.txt" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="images\load.gif" />

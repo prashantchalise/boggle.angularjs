@@ -69,18 +69,18 @@ boggle_app.directive('autoFocus', function ($timeout) {
         $scope.loading = true;
         $scope.activepane = 'game-pane';
 
-        //Init BG
+        //Init directions
         $scope.directions = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
 
         // The dictionary lookup object
         var trie_dict = {};
-        
-         let coords = [];
+         
  
         $scope.bg = {};
         $scope.activeboxes = [];
-        let traverseNodes = []; 
+        var traverseNodes = []; 
 
+        //INIT APP
         REINIT();
        
        
@@ -93,8 +93,10 @@ boggle_app.directive('autoFocus', function ($timeout) {
             .then(response => { return response.text() })
             .then(response => {
                 response.split('\n').forEach((word) => {
+                    //trie_dict = AddToRadixTrie(word, trie_dict); // No radix this time :(
                     AddWords(word);
                 });
+                console.log(trie_dict);
                 $scope.loading = false;
                 //Now Start the timer for first time: 
                 StartTimer();
@@ -112,6 +114,12 @@ boggle_app.directive('autoFocus', function ($timeout) {
                     $scope.error = "Word already on the list.";
                     return;
                 }
+
+                if (!containsWord($scope.bg.txtInput)) {
+                    $scope.error = "Not a valid word.";
+                    return;
+                }
+
                 $scope.bg.Words.push($scope.bg.txtInput);
 
                 $scope.bg.WordsObj.push({
@@ -257,32 +265,9 @@ boggle_app.directive('autoFocus', function ($timeout) {
             traverseNodes = newNodes; 
         }
 
-          
-        //Solve AI
-        $scope.SolveBOT = function () {
-            $scope.bg.MaxWordListObj = [];
-            $scope.bg.MaxWords = [];
-            for (var index = 0; index < $scope.bg.SIDES; index++) {
-                $scope.bg.BOXMATRIX.forEach((row, rowIndex) => {
-                    row.forEach((col, colIndex) => {
-                        solveBoard($scope.bg.D3BOX[rowIndex][colIndex][index], [rowIndex, colIndex],index);
-                    });
-                });
-            }
-            
-            if ($scope.bg.MaxWords.length) {
-                // sort available words by length descending
-                $scope.bg.MaxWordListObj = $scope.bg.MaxWordListObj.sort((a, b) => { return b.word.length - a.word.length; });
-                $scope.bg.MaxWords.forEach(async function (word) {
-                    $scope.bg.MaxScore += ((word.length > 7) ? 11 : (word.length < 5 ? 1 : (word.length - 3)));
-                }); 
-            }
-         }
 
         //Submit and display result
         $scope.Submit = function () {
-
-            $scope.SolveBOT();
 
             if ($scope.bg.Words.length) {
                 // sort available words by length descending
@@ -301,8 +286,7 @@ boggle_app.directive('autoFocus', function ($timeout) {
 
         //REINIT
         function REINIT() {
-
-            coords = [];
+             
 
             $scope.bg = { alphabets: {}, txtInput: "", txtResult: "", LEN: 4, MIN: 3, SIDES: 4, D3BOX: new Array(), SIDE_SELECTED: 0
                 , BOXMATRIX: new Array(), TIMER: 180, WordsObj:[], Words: [], YourScore: 0, MaxWords: [], MaxWordListObj:[], MaxScore: 0 };
@@ -388,61 +372,7 @@ boggle_app.directive('autoFocus', function ($timeout) {
 
         }
 
-        // SOLVER
-        // CODE Is copied for deep down recursive approach. 
-
-        //solve Board
-        function solveBoard(currentWord, currentPosition, currentside, coords = [], usedPositions = []) {
-            const [row, col] = currentPosition;
-            const positions_copy = usedPositions.slice();
-            const coords_copy = coords.slice();
-
-            coords_copy.push(currentPosition);
-
-            if (currentWord.length >= $scope.bg.MIN && containsWord(currentWord) && !inArray($scope.bg.MaxWords, currentWord)) {
-                $scope.bg.MaxWords.push(currentWord);
-                $scope.bg.MaxWordListObj.push({
-                    word: currentWord,
-                    coords: coords_copy,
-                    board: currentside,
-                    score: ((currentWord.length > 7) ? 11 : (currentWord.length < 5 ? 1 : (currentWord.length - 3)))
-                });
-                coords = [];
-            }
-
-            const adjacents = getAdjacentLetters(currentWord, currentside, currentPosition, usedPositions);
-
-            adjacents.forEach(adjacent => {
-                positions_copy.push(currentPosition);
-                const [x, y] = adjacent;
-                const letter = $scope.bg.D3BOX[x][y][currentside];
-                const word = currentWord + letter;
-                solveBoard(word, adjacent, currentside, coords_copy, positions_copy);
-            });
-            return;
-        }
-
-        //Get Adjacent letters
-        function getAdjacentLetters(currentWord, currentside, position, usedPositions) {
-            const _directions = $scope.directions.slice(0);
-            const [row, col] = position;
-
-            return _directions.reduce((acc, direction) => {
-                const [x, y] = direction;
-                const rowSum = (x < 0) ? row - Math.abs(x) : row + x;
-                const colSum = (y < 0) ? col - Math.abs(y) : col + y;
-                if ((rowSum >= 0 && colSum >= 0) && (rowSum < $scope.bg.LEN && colSum < $scope.bg.LEN)) {
-                    let adjacent = [rowSum, colSum];
-                    let adjacentWord = currentWord + $scope.bg.D3BOX[rowSum][colSum][currentside];
-                    if (!arrayMatch(usedPositions, adjacent) && isValidPrefix(adjacentWord)) {
-                        acc.push(adjacent);
-                    }
-                }
-                return acc;
-            }, []);
-        }
-
-
+    
         function inArray(arr, item) {
             return (arr.indexOf(item) !== -1);
         };
@@ -459,8 +389,7 @@ boggle_app.directive('autoFocus', function ($timeout) {
         function containsWord(word) {
             if (typeof word !== 'string') {
                 console.log("error");
-                throw (`Invalid parameter passed to Trie.containsWord(string word): ${word}`);
-            }
+             }
 
             if (word == null || !word) {
                 return false;
@@ -477,19 +406,9 @@ boggle_app.directive('autoFocus', function ($timeout) {
                 }
                 return letter;
             });
-        };
+        }; 
 
-        function isValidPrefix(prefix) {
-            let currentNode = trie_dict;
-             return prefix.split('').every(letter => {
-                if (!currentNode[letter]) {
-                    return false;
-                }
-                currentNode = currentNode[letter];
-                return true;
-            });
-        };
-
+        //Implements TRIE
         function AddWords(word) {
             if (word == null || word === '') {
                 return;
@@ -508,7 +427,25 @@ boggle_app.directive('autoFocus', function ($timeout) {
              });
         };
 
-        // ./SOLVER
+
+        //function AddToRadixTrie(word,dict) {
+        //    if (word == null || word === '') {
+        //        return;
+        //    }
+        //     var ch = word[0]; // get the first character
+        //    if (!dict[ch]) { // create new node when not exists
+        //        dict[ch] = { value: ch, count: 1, followables: {} };
+        //    } else { // increment count when exist
+        //        dict[ch].count += 1;
+        //    }
+        //    var substr = word.substring(1); // remove first character
+        //    if (substr) { // do it for the remaining substring
+        //        dict[ch].followables = AddToRadixTrie(substr, dict[ch].followables);
+        //    }
+        //    return dict;
+        //}
+
+      
 
         //Add Words to List
         function AddWordsToList() {
