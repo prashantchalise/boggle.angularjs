@@ -6,7 +6,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>D:\Projects\Rolpo.Official\Publish_GS2</_PublishTargetUrl>
+    <_PublishTargetUrl>D:\Projects\Rolpo.COM\boggle.angularjs\Publish</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/Autofac.dll">
@@ -23,6 +23,30 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="bin/Autofac.pdb">
       <publishTime>03/21/2019 17:17:50</publishTime>
+    </File>
+    <File Include="bin/BogglePC.Model.dll">
+      <publishTime>04/27/2020 21:27:31</publishTime>
+    </File>
+    <File Include="bin/BogglePC.Model.dll.config">
+      <publishTime>11/26/2019 19:52:11</publishTime>
+    </File>
+    <File Include="bin/BogglePC.Model.pdb">
+      <publishTime>04/27/2020 21:27:31</publishTime>
+    </File>
+    <File Include="bin/BogglePC.Service.dll">
+      <publishTime>04/27/2020 21:27:31</publishTime>
+    </File>
+    <File Include="bin/BogglePC.Service.dll.config">
+      <publishTime>11/26/2019 19:52:11</publishTime>
+    </File>
+    <File Include="bin/BogglePC.Service.pdb">
+      <publishTime>04/27/2020 21:27:31</publishTime>
+    </File>
+    <File Include="bin/BogglePC.UI.dll">
+      <publishTime>04/27/2020 21:27:32</publishTime>
+    </File>
+    <File Include="bin/BogglePC.UI.pdb">
+      <publishTime>04/27/2020 21:27:32</publishTime>
     </File>
     <File Include="bin/BuyFly.Service.dll">
       <publishTime>11/26/2019 23:09:04</publishTime>
@@ -165,6 +189,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="css/rolpo_custom.css">
       <publishTime>02/05/2020 19:18:22</publishTime>
     </File>
+    <File Include="dictionary-yawl.bkp.txt">
+      <publishTime>04/26/2020 00:55:16</publishTime>
+    </File>
+    <File Include="dictionary-yawl.txt">
+      <publishTime>04/26/2020 22:00:43</publishTime>
+    </File>
     <File Include="favicon.ico">
       <publishTime>11/26/2019 19:52:11</publishTime>
     </File>
@@ -189,6 +219,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="images/load.gif">
       <publishTime>11/26/2019 19:52:11</publishTime>
     </File>
+    <File Include="images/profile.png">
+      <publishTime>04/25/2020 18:50:34</publishTime>
+    </File>
     <File Include="lib/angController/Account/agentstaffsController.js">
       <publishTime>11/26/2019 19:52:11</publishTime>
     </File>
@@ -211,7 +244,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/02/2020 17:09:00</publishTime>
     </File>
     <File Include="lib/angController/Dashboard/dashboardController.js">
-      <publishTime>01/05/2020 10:19:40</publishTime>
+      <publishTime>04/27/2020 01:42:51</publishTime>
     </File>
     <File Include="lib/angController/Dashboard/serviceOrderController.js">
       <publishTime>01/05/2020 10:19:40</publishTime>
@@ -382,7 +415,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/26/2019 19:52:11</publishTime>
     </File>
     <File Include="lib/app.js">
-      <publishTime>02/05/2020 18:03:59</publishTime>
+      <publishTime>04/26/2020 18:53:08</publishTime>
     </File>
     <File Include="lib/CKeditor/ckeditor.js">
       <publishTime>11/26/2019 19:52:11</publishTime>
@@ -1285,7 +1318,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/02/2020 17:08:42</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>02/02/2020 11:36:38</publishTime>
+      <publishTime>04/26/2020 23:34:58</publishTime>
     </File>
     <File Include="Views/Home/UnAuthorized.cshtml">
       <publishTime>11/26/2019 19:52:11</publishTime>
@@ -1414,7 +1447,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/02/2020 11:36:39</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
-      <publishTime>12/10/2019 10:37:42</publishTime>
+      <publishTime>04/25/2020 18:02:58</publishTime>
     </File>
     <File Include="Views/Shared/Lockout.cshtml">
       <publishTime>11/26/2019 19:52:11</publishTime>
@@ -1423,7 +1456,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/26/2019 19:52:11</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>02/10/2020 01:57:47</publishTime>
+      <publishTime>04/26/2020 18:52:38</publishTime>
     </File>
     <File Include="Views/Shared/_LayoutHomePage.cshtml">
       <publishTime>02/02/2020 11:36:39</publishTime>
@@ -1432,7 +1465,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>11/26/2019 19:52:11</publishTime>
     </File>
     <File Include="Views/Shared/_Menus.cshtml">
-      <publishTime>02/24/2020 12:23:21</publishTime>
+      <publishTime>04/25/2020 18:17:22</publishTime>
     </File>
     <File Include="Views/Shared/_Modal.cshtml">
       <publishTime>11/26/2019 19:52:11</publishTime>
@@ -1513,13 +1546,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/01/2020 15:54:47</publishTime>
     </File>
     <File Include="Views/Web.config">
-      <publishTime>12/10/2019 10:37:42</publishTime>
+      <publishTime>04/25/2020 18:02:58</publishTime>
     </File>
     <File Include="Views/_ViewStart.cshtml">
       <publishTime>11/26/2019 19:52:11</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>03/08/2020 12:23:01</publishTime>
+      <publishTime>04/27/2020 21:40:11</publishTime>
     </File>
   </ItemGroup>
 </Project>

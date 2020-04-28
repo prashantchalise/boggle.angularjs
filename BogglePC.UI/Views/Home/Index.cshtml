@@ -10,46 +10,59 @@
     <div class="page-content fade-in-up">
 
         <div class="row">
-           
+
             <div class="col-lg-6 col-md-6 offset-md-3 offset-lg-3">
-                <div class="card mt-4"> 
+
+                <div class="card mt-4" ng-hide="loading">
                     <div class="card-body">
                         <h2>BOGGLE</h2>
                         <hr />
-                        <p class="card-text">Type, click through adjacent letters to form words.</p>
-                        <div class="col-sm-12 table-responsive">
-                             <table class="table-compact table-condensed no-border">
+                        <p class="card-text">Type, click through adjacent letters to form words. (min <b>{{bg.MIN}}</b> words)</p>
+                        <div class="col-sm-12 table-responsive" ng-show="activepane=='game-pane'">
+                            <table class="table-compact table-condensed no-border">
                                 <tr>
-                                    <td width="250px"><input type="text" class="form-control" ng-model="bg.txtInput" ng-change="Boggle()" ng-enter="addWordToList()" auto-focus  focus-on="newItemAdded"/></td>
+                                    <td width="250px">
+                                        <input type="text" class="form-control" ng-change="ValidateWord()"
+                                               ng-model="bg.txtInput" ng-enter="Add()" auto-focus focus-on="newItemAdded"
+                                               style="text-transform: uppercase;" /><span style="color:red;">{{error}}</span>
+                                    </td>
                                     <td><i class="fa fa-clock-o"></i> <b>{{remainingTime | secondsToDateTime | date:'mm:ss'}}</b></td>
                                     <td>&nbsp;</td>
                                 </tr>
                                 <tr>
                                     <td>
-                                         <table class="table-bordered" style="min-width:250px;">
-                                            <tr ng-repeat="rows in bg.D3BOX">
+                                        <table class="table-bordered" style="min-width:300px;">
+                                            <tr ng-repeat="rows in bg.D3BOX" ng-init="rowIndex = $index">
                                                 <td ng-repeat="columns in rows" style="text-align:center;">
-                                                    <button class="btn btn-lg btn-outline-success" data-toggle="button" ng-click="OnLetterClicked(columns[bg.SIDE_SELECTED])">{{columns[bg.SIDE_SELECTED]}}</button>
+                                                    <button class="btn btn-lg btn-outline-success" ng-class="{active: activeboxes[rowIndex*bg.LEN + $index]}" ng-click="OnLetterClicked(columns[bg.SIDE_SELECTED])">{{columns[bg.SIDE_SELECTED]}}</button>
                                                 </td>
                                             </tr>
                                         </table>
                                     </td>
-                                    <td><textarea class="form-control" style="height:200px;" ng-model="bg.txtResult" ng-disabled="true"></textarea></td>
+                                    <td>
+                                        <textarea class="form-control" style="height:200px;width:160px;" ng-model="bg.txtResult" ng-disabled="true"></textarea>
+                                    </td>
                                     <td>
                                         <ul class="media-list media-list-divider m-0">
                                             <li class="media">
-                                                <a class="btn btn-default">
+                                                <a class="btn btn-default" ng-click="Help()">
                                                     <i class="fa fa-info-circle"></i> Help
                                                 </a>
                                             </li>
                                             <li class="media">
-                                                <a class="btn btn-default">
-                                                    <i class="fa fa-info-circle"></i> New
+                                                <a class="btn btn-primary" ng-click="NewGame();">
+                                                    <i class="fa  fa-retweet"></i> New
                                                 </a>
                                             </li>
                                             <li class="media">
-                                                <a class="btn btn-default text-success" ng-click="Solve()">
-                                                    <i class="fa fa-check-circle"></i> Solve
+                                                <a class="btn btn-default text-success" ng-click="SolveBOT()">
+                                                    <i class="fa fa-android"></i> BOT
+                                                </a>
+                                            </li>
+
+                                            <li class="media">
+                                                <a class="btn btn-default btn-success" ng-click="Submit()">
+                                                    <i class="fa a-check-square-o"></i> Submit
                                                 </a>
                                             </li>
 
@@ -57,31 +70,243 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="3">
-                                        <a class="btn btn-default" ng-click="Rotate()">
+                                    <td>
+                                        <a class="btn btn-default margin-right-20" ng-click="Rotate()">
                                             <i class="fa fa-refresh"></i> <br />Rotate
                                         </a>
-                                        <a class="btn btn-default">
+                                        <a class="btn btn-warning margin-right-20" ng-click="Undo()">
                                             <i class="fa fa-info-circle"></i><br /> Undo
                                         </a>
-                                        <a class="btn btn-default">
-                                            <i class="fa fa-info-circle"></i><br /> Redo
+                                        <a class="btn btn-danger margin-right-20" ng-click="Clear();">
+                                            <i class="fa fa-minus-circle"></i><br /> Clear
                                         </a>
-                                        <a class="btn btn-default">
+                                        <a class="btn btn-success" ng-click="Add()">
                                             <i class="fa fa-plus"></i><br /> Add
                                         </a>
                                     </td>
-
+                                    <td colspan="2">
+                                        <b>{{bg.Words.length}} words added.</b>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
+
+                        <div class="col-sm-12 table-responsive" ng-show="activepane=='results-pane'">
+
+
+                            <div class="ibox">
+                                <div class="ibox-head">
+                                    <div class="ibox-title">Result</div>
+                                    <div>
+                                        <a class="btn btn-primary btn-sm" ng-click="NewGame();">
+                                            <i class="fa  fa-retweet"></i> New Game
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="ibox-body">
+                                    <table class="table-compact table-condensed no-border">
+                                        <tr>
+                                            <td ng-repeat="x in [].constructor(bg.SIDES) track by $index" ng-init="side = $index;">
+                                                <table class="table-bordered">
+                                                    <tr ng-repeat="rows in bg.D3BOX" ng-init="rowIndex = $index">
+                                                        <td ng-repeat="columns in rows" style="text-align:center;">
+                                                            <button class="btn btn-xs btn-outline-primary">{{columns[side]}}</button>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+                            </div>
+
+                           
+                       
+
+                            
+                            <hr />
+                            <div class="ibox ibox-success">
+                                <div class="ibox-head">
+                                    <div class="ibox-title">You score {{bg.YourScore}} from {{bg.Words.length}} words!</div>
+                                </div>
+                                <div class="ibox-body">
+                                    <p>
+                                        <span ng-repeat="item in bg.WordsObj"  class="badge badge-default m-b-5 margin-right-20" style="min-width:110px">
+                                           {{item.word}} <span ng-class="{'badge-success': item.score>0 , 'badge-danger': item.score == 0} " class="badge  float-right">{{item.score}}</span>
+                                        </span>
+                                         
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="ibox">
+                                <div class="ibox-head">
+                                    <div class="ibox-title">MAX Score = {{bg.MaxScore}} from possible list of {{bg.MaxWords.length}} words.</div>
+                                </div>
+                                <div class="ibox-body">
+                                    <p>
+                                        <span ng-repeat="item in bg.MaxWordListObj" class="badge badge-default m-b-5 margin-right-20" style="min-width:110px">{{item.word}} <span class="badge badge-success float-right">{{item.score}}</span></span>
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
+
                 </div>
-            </div> 
-        </div> 
+
+
+                <div class="card mt-4" ng-show="loading">
+                    LOADING ..<i class="fa fa-refresh fa-spin"></i>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- END PAGE CONTENT-->
 </div>
+
+
+<script type="text/ng-template" id="customHelp">
+
+    <div class="modal-content">
+        <div class="modal-header" style="display: block;">
+            <button type="button" style="padding: 0.3rem;" class="close pull-left" data-ng-click="cancelEditing()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h5 class="modal-title text-center">Boggle Help Topics</h5>
+        </div>
+
+        <div class="modal-body">
+            <div class="box-body">
+                <div id="main" class="post post-single">
+                    <span id="ezoic-pub-ad-placeholder-101"></span><div class="post-header post-author"><div class="post-title"><h1>Boggle Game Rules</h1></div></div>
+
+                    <div class="post-thumbnail"><img src="https://www.ultraboardgames.com/img/slideshow/boggle.jpg" alt=""><span id="ezoic-pub-ad-placeholder-125" class="ezoic-adpicker-ad"></span></div>
+
+
+                    <h2>Game Components</h2>
+
+                    <ul>
+                        <li>16 letter cubes</li>
+                        <li>cube grid with dome</li>
+                        <li>3-minute timer</li>
+
+                    </ul>
+
+                    <br>
+                    <h2>Object of the Game</h2>
+
+                    <p>Find as many words as you can in the 4x4 letter grid. To win, be the player with:</p>
+
+                    <ul>
+                        <li>the highest score at the end of a 3-minute game</li>
+                        <li>or be the first player to reach the designated point limit in a tournament game.</li>
+
+                    </ul>
+
+                    <p>Or practice by yourself to beat your personal best.</p>
+
+                    <br>
+                    <h2>Setup</h2>
+
+
+                    <p>Each player should have a pencil and a piece of paper Drop the letter cubes into the dome and place the yellow cube grid, open side down, over the dome.<span id="ezoic-pub-ad-placeholder-113" class="ezoic-adpicker-ad"></span><span style="display:block !important;float:none;margin-bottom:15px !important;margin-left:0px !important;margin-right:0px !important;margin-top:15px !important;min-height:250px;min-width:300px;text-align:center !important;" class="ezoic-ad medrectangle-3 adtester-container adtester-container-113" data-ez-name="ultraboardgames_com-medrectangle-3"><span id="div-gpt-ad-ultraboardgames_com-medrectangle-3-0" ezaw="300" ezah="250" style="position: relative; z-index: 0; min-height: 250px; min-width: 300px;" class="ezoic-ad ezfound" data-google-query-id="CNzP5tO7i-kCFeUAtwAdDccOfA"><div id="google_ads_iframe_/1254144/ultraboardgames_com-medrectangle-3_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1254144/ultraboardgames_com-medrectangle-3_0" title="3rd party ad content" name="google_ads_iframe_/1254144/ultraboardgames_com-medrectangle-3_0" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" srcdoc="" style="border: 0px; vertical-align: bottom;" data-google-container-id="1b" data-load-complete="true"></iframe></div></span></span></p>
+
+                    <p>Turn the domed grid right-side up, shake the cubes around, and move the grid until each cube falls into place. As one player removes the dome, another player starts the timer.</p>
+
+                    <br>
+                    <h2>Game Play</h2>
+
+                    <p>Players sit around the table so that everyone can see the Boggle grid when it's in play. Each player will need a pencil and paper (not included).</p>
+
+                    <p>
+                        When the timer starts, each player searches the assortment of letters for words of three letters or more. When a player finds a word, he/she writes it down.<span id="ezoic-pub-ad-placeholder-129" class="ezoic-adpicker-ad"></span><span style="float: none; min-height: 250px; min-width: 300px; display: none !important; margin: 15px 0px !important; text-align: center !important;" class="ezoic-ad medrectangle-4 adtester-container adtester-container-129" data-ez-name="ultraboardgames_com-medrectangle-4"><span id="div-gpt-ad-ultraboardgames_com-medrectangle-4-0" ezaw="300" ezah="250" style="position:relative;z-index:0;display:inline-block;min-height:250px;min-width:300px;" class="ezoic-ad ezoic-adl ezfound" data-google-query-id="CJC7vNO7i-kCFROEcAodIzEH4w">
+                    </p>
+
+                    <p>Words are formed from adjoining letters. Letters must join in the proper sequence to spell a word. They may join horizontally, vertically, or diagonally, to the left, right, or up-and-down.</p>
+
+                    <p>No letter cube, however, may be used more than once within a single word.</p>
+
+                    <h3>Finding Words</h3>
+
+                    <p>Search the assortment of letters for words of three or more letters.</p>
+
+                    <p>Words are formed from letters that adjoin in sequence horizontally, vertically or diagonally in any direction. No letter may be used more than once within a single word. When you find a word, write it down. Keep looking and writing until time's up.</p>
+
+
+                    <h3>Bonus Letters</h3>
+
+                    <p>If there's a letter with red around it in your grid, you'll score double for words you make that include this letter.</p>
+
+                    <h3>Right words</h3>
+
+                    <p>Figures 3, 4 and 5 show how words may be formed using the adjoining letters S, O, L, I.<span id="ezoic-pub-ad-placeholder-116" class="ezoic-adpicker-ad"></span></p>
+
+
+                    <h3>Wrong words</h3>
+
+
+                    <p>Try your skill at finding the hidden words in the grid above. There are more than 70, including molar, prose and turmoil. Can you find more?</p>
+
+                    <h3>Types of Words Allowed</h3>
+
+                    <p>Any words (noun, verb, adjective, adverb, etc)., plural of, form of, or tense is acceptable as long as it can be found in a standard English dictionary.</p>
+
+                    <p>Words within words are also allowed: spare, spa, par, are, spar, pare. Proper nouns (Smith, Ohio, France, etc). are not allowed.</p>
+
+                    <br>
+
+                    <p>When time runs out, the timer light will stop flashing red and make a soft beep. All players must stop writing. Each player in turn then reads his or her list aloud.</p>
+
+                    <p>Important: Any word that appears on more than one player's list must be crossed off all lists - and no one gets credit for it!</p>
+
+                    <p>Players score their remaining words as follows:</p>
+
+                    <table class="table">
+
+                        <thead>
+
+                            <tr><th>NO. OF LETTERS</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8 or more</th></tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr><td>POINTS</td><td>1</td><td>1</td><td>2</td><td>3</td><td>5</td><td>11</td></tr>
+
+                        </tbody>
+
+                    </table>
+
+                    <br>
+
+                    <p>Double the score for any words that included a bonus letter!</p>
+
+                    <p><span id="ezoic-pub-ad-placeholder-132" class="ezoic-adpicker-ad"></span></p><p>The winner is the player:</p>
+
+                    <ul>
+                        <li>who earned the most points when play stopped</li>
+                        <li>who is the first player to reach the tournament score - 50 points, 100 points, or whatever was decided before playing.</li>
+
+                    </ul>
+
+                </div>
+            </div><!-- End of box-body -->
+        </div><!-- End of modal-body -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default pull-left" ng-click="cancelEditing()">Close</button>
+        </div>
+    </div><!-- /.modal-content -->
+</script>
+
+@section css{
+    <style type="text/css">
+        .margin-right-20 {
+        margin-right:20px;
+        }
+    </style>
+    }
 
 @section Scripts{
 
